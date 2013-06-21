@@ -22,8 +22,42 @@ JotForm API requires API key for all user related calls. You can create your API
 ### Examples
 
 Print all forms of the user
-    
 
+package com.jotform.api;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+public class PrintFormList {
+
+	
+	public static void main(String[] args) {
+	
+		JotForm client = new JotForm("8b36455f659087568bed58c1642082f4");
+		
+		
+		JSONObject formsResponse = client.getForms();
+		
+		try {
+			
+			JSONArray forms = formsResponse.getJSONArray("content");
+			
+			for (int i=0; i<forms.length(); i++){
+				JSONObject form = forms.getJSONObject(i);
+				
+				System.out.println(form.get("title") + " (Total:" +form.get("count") + " New:" + form.get("new") + ")");
+				
+			}
+		
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+
+}
+   
 Get latest submissions of the user
     
