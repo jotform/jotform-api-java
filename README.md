@@ -34,7 +34,7 @@ public class PrintFormList {
 	
 	public static void main(String[] args) {
 	
-		JotForm client = new JotForm("8b36455f659087568bed58c1642082f4");
+		JotForm client = new JotForm("YOUR API KEY");
 		
 		
 		JSONObject formsResponse = client.getForms();
@@ -70,7 +70,7 @@ public class GetTodaysSubmissions {
 
 	public static void main(String[] args) {
 		
-		JotForm client = new JotForm("8b36455f659087568bed58c1642082f4");
+		JotForm client = new JotForm("YOUR API KEY");
 		
 		// TODO: update with submission query to only fetch submissions received today
 		JSONObject submissionsResponse = client.getSubmissions();
