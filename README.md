@@ -87,8 +87,8 @@ public class GetTodaysSubmissions {
 				System.out.println("ip :" + submission.get("ip") + " date:" + submission.get("created_at"));
 				System.out.println("submission content :\n");
 				
-				JSONObject fields = submission.getJSONObject("fields");
-				Iterator<String> fieldsIterator = submission.getJSONObject("fields").keys();
+				JSONObject fields = submission.getJSONObject("answers");
+				Iterator<String> fieldsIterator = submission.getJSONObject("answers").keys();
 				
 				while(fieldsIterator.hasNext()){
 
