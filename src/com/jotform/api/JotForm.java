@@ -205,8 +205,22 @@ public class JotForm {
         return executeGetRequest("/form/" + formID + "/submissions", null);
     }
 
-    public JSONObject createFormSubmissions(long formID, HashMap<String, String> submission) {
-    	return executePostRequest("/form/" + formID +"/submissions", submission);
+    public JSONObject createFormSubmissions(String formID, HashMap<String, String> submission) {
+    	HashMap<String, String> parameters = new HashMap<String, String>();
+    	
+    	Set<String> keys = submission.keySet();
+    	
+    	for(String key : keys) {
+    		if(key.contains("first")){
+    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][first]", submission.get(key));
+    		} else if (key.contains("last")) { 
+    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][last]", submission.get(key));
+    		} else {
+    			parameters.put("submission[" + key + "]", submission.get(key));	
+    		}
+    	}
+    	
+    	return executePostRequest("/form/" + formID +"/submissions", parameters);
     }
 
     public JSONObject getFormFiles(long formID) {
@@ -225,7 +239,7 @@ public class JotForm {
     	return executePostRequest("/form/" + formID + "/webhooks", params);
     }
 
-    public JSONObject getSubmission(long sid) {
+    public JSONObject getSubmission(String sid) {
         return executeGetRequest("/submission/" + sid, null);
     }
 
