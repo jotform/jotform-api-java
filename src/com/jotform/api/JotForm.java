@@ -9,13 +9,22 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
+import org.apache.http.params.HttpParams;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class JotForm {
     
@@ -41,7 +50,7 @@ public class JotForm {
         }
     }
 
-    public JSONObject executeHttpRequest(String path, HashMap<String,String> params, String method) {
+    public JSONObject executeHttpRequest(String path, HashMap<String,String> params, String method) throws UnsupportedEncodingException {
 
         DefaultHttpClient client = new DefaultHttpClient();
         
@@ -54,6 +63,31 @@ public class JotForm {
         } else if (method.equals("POST")) {
             req = new HttpPost(JotForm.baseUrl + JotForm.version + path);
             req.addHeader("apiKey", this.apiKey);
+            
+            /*
+            Set<String> keys = params.keySet();
+            
+            for(String key:keys) {
+            	HttpParams parameter = new BasicHttpParams();
+            	parameter.setParameter(key, params.get(key));
+            	
+            	System.out.println(parameter.toString());
+            	
+            	req.setParams(parameter);
+            }
+            */
+            
+            Set<String> keys = params.keySet();
+            
+            List<NameValuePair> parameters = new ArrayList<NameValuePair>(params.size());
+            
+            for(String key : keys) {
+            	parameters.add(new BasicNameValuePair(key, params.get(key)));
+            }
+            
+            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "UTF-8");
+            
+            ((HttpPost) req).setEntity(entity);
         } else {
         	req = null;
         }
@@ -99,11 +133,23 @@ public class JotForm {
     }
 
     public JSONObject executeGetRequest(String path, HashMap<String,String> params) {
-        return executeHttpRequest(path, params, "GET");
+        try {
+			return executeHttpRequest(path, params, "GET");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
     }
 
     public JSONObject executePostRequest(String path, HashMap<String,String> params) {
-        return executeHttpRequest(path, params, "POST");
+        try {
+			return executeHttpRequest(path, params, "POST");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
     }
 
     public JSONObject getUser() {
@@ -171,7 +217,7 @@ public class JotForm {
         return executeGetRequest("/form/" + formID + "/webhooks", null);
     }
 
-    public JSONObject createFormWebhook(long formID, String webhookURL) {
+    public JSONObject createFormWebhook(String formID, String webhookURL) {
     	
     	HashMap<String,String> params = new HashMap<String,String>();
     	params.put("webhookURL", webhookURL);
