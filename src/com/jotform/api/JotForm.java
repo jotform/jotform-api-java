@@ -159,9 +159,9 @@ public class JotForm {
         return executeGetRequest("/form/" + formID + "/submissions", null);
     }
 
-//    public JSONObject addSubmissionsByFormId(long formId, JSONArray submissions) {
-//    	
-//    }
+    public JSONObject createFormSubmissions(long formID, HashMap<String, String> submission) {
+    	return executePostRequest("/form/" + formID +"/submissions", submission);
+    }
 
     public JSONObject getFormFiles(long formID) {
         return executeGetRequest("/form/" + formID + "/files", null);
@@ -176,7 +176,7 @@ public class JotForm {
     	HashMap<String,String> params = new HashMap<String,String>();
     	params.put("webhookURL", webhookURL);
     	
-    	return executePostRequest("/form/" + formID + "/files", params);
+    	return executePostRequest("/form/" + formID + "/webhooks", params);
     }
 
     public JSONObject getSubmission(long sid) {
