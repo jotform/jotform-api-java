@@ -254,6 +254,9 @@ public class JotForm {
     public JSONObject getFormProperties(long formID) {
         return executeGetRequest("/form/" + formID + "/properties", null);
     }
-
+    
+    public JSONObject getFormProperty(long formID, String propertyKey ) {
+        return executeGetRequest("/form/" + formID + "/properties/" + propertyKey, null);
+    }
 }
 
