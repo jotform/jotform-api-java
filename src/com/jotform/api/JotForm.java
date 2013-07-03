@@ -250,6 +250,10 @@ public class JotForm {
     public JSONObject getFolder(long folderID) {
         return executeGetRequest("/folder/" + folderID, null);
     }
+    
+    public JSONObject getFormProperties(long formID) {
+        return executeGetRequest("/form/" + formID + "/properties", null);
+    }
 
 }
 
