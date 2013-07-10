@@ -210,45 +210,11 @@ public class JotForm {
     	
     	Set<String> keys = submission.keySet();
     	
-    	for(String key : keys) {
-    		if(key.contains("first")){
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][first]", submission.get(key));
-    		} else if (key.contains("last")) { 
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][last]", submission.get(key));
-    		} else if (key.contains("month")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][month]", submission.get(key));
-    		} else if (key.contains("day")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][day]", submission.get(key));
-    		} else if (key.contains("year")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][year]", submission.get(key));
-    		} else if (key.contains("hour")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][hour]", submission.get(key));
-    		} else if (key.contains("min")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][min]", submission.get(key));
-    		} else if (key.contains("ampm")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][ampm]", submission.get(key));
-    		} else if (key.contains("addr_line1")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][addr_line1]", submission.get(key));
-    		} else if (key.contains("addr_line2")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][addr_line2]", submission.get(key));
-    		} else if (key.contains("city")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][city]", submission.get(key));
-    		} else if (key.contains("state")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][state]", submission.get(key));
-    		} else if (key.contains("postal")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][postal]", submission.get(key));
-    		} else if (key.contains("country")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][country]", submission.get(key));
-    		} else if (key.contains("area")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][area]", submission.get(key));
-    		} else if (key.contains("phone")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][phone]", submission.get(key));
-    		} else if (key.contains("hourSelect")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][hourSelect]", submission.get(key));
-    		} else if (key.contains("minuteSelect")) {
-    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][minuteSelect]", submission.get(key));
+    	for(String key: keys) {
+    		if (key.contains("_")) {
+    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][" + key.substring(key.indexOf("_") + 1) + "]", submission.get(key));
     		} else {
-    			parameters.put("submission[" + key + "]", submission.get(key));	
+    			parameters.put("submission[" + key + "]", submission.get(key));
     		}
     	}
     	
