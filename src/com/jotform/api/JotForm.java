@@ -28,7 +28,7 @@ import java.util.Set;
 
 public class JotForm {
     
-    private static String baseUrl = "https://api.jotform.com/";
+    private static String baseUrl = "http://api.jotform.com/";
     public static String version = "v1";
     private String apiKey;
     private boolean debugMode;
@@ -58,7 +58,24 @@ public class JotForm {
         HttpResponse resp;
 
         if (method.equals("GET")){
-            req = new HttpGet(JotForm.baseUrl + JotForm.version + path);
+        	
+        	String parametersStr = "";
+        	if (params != null) {
+            	Set<String> keys = params.keySet();   
+            	parametersStr = "?";
+            	int count = 0;
+            	
+            	for(String key: keys) {
+            	
+            		parametersStr = parametersStr + key + "=" + params.get(key);
+            		count++;
+            		if (count < params.size()) {
+            			parametersStr = parametersStr + "&";
+            		}
+            	}
+        	}
+            
+        	req = new HttpGet(JotForm.baseUrl + JotForm.version + path + parametersStr);
             req.addHeader("apiKey", this.apiKey);
         } else if (method.equals("POST")) {
             req = new HttpPost(JotForm.baseUrl + JotForm.version + path);
@@ -88,12 +105,12 @@ public class JotForm {
             UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "UTF-8");
             
             ((HttpPost) req).setEntity(entity);
+            
         } else {
         	req = null;
         }
-
+        
         try {
-        	
             resp = client.execute(req);
             
             int statusCode = resp.getStatusLine().getStatusCode();
@@ -151,6 +168,41 @@ public class JotForm {
 		}
 		return null;
     }
+    
+    private HashMap<String, String> createConditions(String offset, String limit, HashMap<String, String> filter, String orderBy) {
+    	HashMap<String, String> params = new HashMap<String, String>();
+    	
+    	if (offset != "") {
+    		params.put("offset", offset);
+    	}
+    	
+    	if (limit != "") {
+    		params.put("limit", limit);
+    	}
+    	
+    	if (filter != null) {
+        	String value = "";
+        	int count = 0;
+        	
+        	Set<String> keys = filter.keySet();
+        	for(String key: keys) {
+        		value = value + "%7b%22" + key + "%22:%22" + filter.get(key).replace(" ", "%20") + "%22%7d";
+        		
+        		count++;
+        		
+        		if(count < filter.size()) {
+        			value = value + "%2c";
+        		}
+        	}
+    		params.put("filter", value);
+    	}
+    	
+    	if (orderBy != "") {
+    		params.put("order_by", orderBy);
+    	}
+    	
+    	return params;
+    }
 
     public JSONObject getUser() {
         return executeGetRequest("/user", null);
@@ -163,10 +215,15 @@ public class JotForm {
     public JSONObject getForms() {
     	return executeGetRequest("/user/forms", null);
     }
-
-    // TODO: add submission queries
+    
     public JSONObject getSubmissions() {
         return executeGetRequest("/user/submissions", null);
+    }
+
+    public JSONObject getSubmissions(String offset, String limit, HashMap<String, String> filter, String orderBy) {
+    	HashMap<String, String> params = createConditions(offset, limit, filter, orderBy);
+    	
+        return executeGetRequest("/user/submissions", params);
     }
 
     public JSONObject getSubUsers() {
