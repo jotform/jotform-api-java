@@ -261,6 +261,12 @@ public class JotForm {
     public JSONObject getFormSubmissions(long formID) {
         return executeGetRequest("/form/" + formID + "/submissions", null);
     }
+    
+    public JSONObject getFormSubmissions(long formID, String offset, String limit, HashMap<String, String> filter, String orderBy) {
+    	HashMap<String, String> params = createConditions(offset, limit, filter, orderBy);
+    	
+        return executeGetRequest("/form/" + formID + "/submissions", params);
+    }
 
     public JSONObject createFormSubmissions(long formID, HashMap<String, String> submission) {
     	HashMap<String, String> parameters = new HashMap<String, String>();
