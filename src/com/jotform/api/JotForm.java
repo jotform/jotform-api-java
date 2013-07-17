@@ -343,5 +343,21 @@ public class JotForm {
     public JSONObject deleteSubmission(long sid ) {
         return executeDeleteRequest("/submission/" + sid, null);
     }
+    
+    public JSONObject editSubmission(long sid, HashMap<String, String> submission ) {
+    	HashMap<String, String> parameters = new HashMap<String, String>();
+    	
+    	Set<String> keys = submission.keySet();
+    	
+    	for(String key: keys) {
+    		if (key.contains("_")) {
+    			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][" + key.substring(key.indexOf("_") + 1) + "]", submission.get(key));
+    		} else {
+    			parameters.put("submission[" + key + "]", submission.get(key));
+    		}
+    	}
+    	
+        return executePostRequest("/submission/" + sid, parameters);
+    }
 }
 
