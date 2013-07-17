@@ -11,6 +11,7 @@ import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -106,6 +107,9 @@ public class JotForm {
             
             ((HttpPost) req).setEntity(entity);
             
+        } else if (method.equals("DELETE")) {
+            req = new HttpDelete(JotForm.baseUrl + JotForm.version + path);
+            req.addHeader("apiKey", this.apiKey);
         } else {
         	req = null;
         }
@@ -162,6 +166,16 @@ public class JotForm {
     public JSONObject executePostRequest(String path, HashMap<String,String> params) {
         try {
 			return executeHttpRequest(path, params, "POST");
+		} catch (UnsupportedEncodingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+    }
+    
+    public JSONObject executeDeleteRequest(String path, HashMap<String,String> params) {
+        try {
+			return executeHttpRequest(path, params, "DELETE");
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -324,6 +338,10 @@ public class JotForm {
     
     public JSONObject getFormProperty(long formID, String propertyKey ) {
         return executeGetRequest("/form/" + formID + "/properties/" + propertyKey, null);
+    }
+    
+    public JSONObject deleteSubmission(long sid ) {
+        return executeDeleteRequest("/submission/" + sid, null);
     }
 }
 
