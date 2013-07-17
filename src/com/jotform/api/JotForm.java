@@ -216,6 +216,12 @@ public class JotForm {
     	return executeGetRequest("/user/forms", null);
     }
     
+    public JSONObject getForms(String offset, String limit, HashMap<String, String> filter, String orderBy) {
+    	HashMap<String, String> params = createConditions(offset, limit, filter, orderBy);
+    	
+    	return executeGetRequest("/user/forms", params);
+    }
+    
     public JSONObject getSubmissions() {
         return executeGetRequest("/user/submissions", null);
     }
