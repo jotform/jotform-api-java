@@ -94,18 +94,19 @@ public class JotForm {
             	req.setParams(parameter);
             }
             */
-            
-            Set<String> keys = params.keySet();
-            
-            List<NameValuePair> parameters = new ArrayList<NameValuePair>(params.size());
-            
-            for(String key : keys) {
-            	parameters.add(new BasicNameValuePair(key, params.get(key)));
+            if (params != null) {
+	            Set<String> keys = params.keySet();
+	            
+	            List<NameValuePair> parameters = new ArrayList<NameValuePair>(params.size());
+	            
+	            for(String key : keys) {
+	            	parameters.add(new BasicNameValuePair(key, params.get(key)));
+	            }
+	            
+	            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "UTF-8");
+	            
+	            ((HttpPost) req).setEntity(entity);
             }
-            
-            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "UTF-8");
-            
-            ((HttpPost) req).setEntity(entity);
             
         } else if (method.equals("DELETE")) {
             req = new HttpDelete(JotForm.baseUrl + JotForm.version + path);
@@ -358,6 +359,10 @@ public class JotForm {
     	}
     	
         return executePostRequest("/submission/" + sid, parameters);
+    }
+    
+    public JSONObject cloneForm(long formID ) {
+        return executePostRequest("/form/" + formID + "/clone", null);
     }
 }
 
