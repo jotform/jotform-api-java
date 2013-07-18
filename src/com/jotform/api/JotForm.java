@@ -364,5 +364,9 @@ public class JotForm {
     public JSONObject cloneForm(long formID ) {
         return executePostRequest("/form/" + formID + "/clone", null);
     }
+    
+    public JSONObject deleteFormQuestion(long formID, long qid ) {
+        return executeDeleteRequest("/form/" + formID + "/question/" + qid, null);
+    }
 }
 
