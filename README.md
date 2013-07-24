@@ -1,6 +1,6 @@
 jotform-api-java 
 ===============
-JotForm API - Java Client
+[JotForm API](http://api.jotform.com/docs/) - Java Client
 
 
 ### Installation
