@@ -23,6 +23,7 @@ JotForm API requires API key for all user related calls. You can create your API
 
 Print all forms of the user
 
+```java
 package com.jotform.api;
 
 import org.json.JSONArray;
@@ -58,9 +59,11 @@ public class PrintFormList {
 	}
 
 }
+``` 
    
 Get submissions of the latest form
 
+```java
 package com.jotform.api;
 
 import org.json.JSONArray;
@@ -94,9 +97,11 @@ public class PrintFormSubmissions {
 	}
 
 }
+``` 
 
 Get latest 100 submissions ordered by creation date
 
+```java
 package com.jotform.api;
 
 import org.json.JSONArray;
@@ -117,9 +122,11 @@ public class PrintLastSubmissions {
 	}
 
 }
+``` 
 
 Submission and form filter examples
 
+```java
 package com.jotform.api;
 
 import java.util.HashMap;
@@ -154,9 +161,11 @@ public class Filters {
 	}
 
 }
+``` 
 
 Delete last 50 submissions
 
+```java
 package com.jotform.api;
 
 import org.json.JSONArray;
@@ -189,8 +198,9 @@ public class DeleteSubmissions {
 	}
 
 }
+``` 
 
-First the JotForm class is included from the jotform-api-java/JotForm.java file. This class provides access to JotForm's API. You have to create an API client instance with your API key. 
+First the _JotForm_ class is included from the _jotform-api-java/JotForm.java_ file. This class provides access to JotForm's API. You have to create an API client instance with your API key. 
 In any case of exception (wrong authentication etc.), you can catch it or let it fail with fatal error.
 
 
