@@ -219,76 +219,164 @@ public class JotForm {
     	return params;
     }
 
+    /**
+     * Get user account details for a JotForm user.
+     * @return Returns user account type, avatar URL, name, email, website URL and account limits.
+     */
     public JSONObject getUser() {
         return executeGetRequest("/user", null);
     }
 
+    /**
+     * Get number of form submissions received this month.
+     * @return Returns number of submissions, number of SSL form submissions, payment form submissions and upload space used by user.
+     */
     public JSONObject getUsage() {
         return executeGetRequest("/user/usage", null);
     }
     
+    /**
+     * Get a list of forms for this account
+     * @return Returns basic details such as title of the form, when it was created, number of new and total submissions.
+     */
     public JSONObject getForms() {
     	return executeGetRequest("/user/forms", null);
     }
     
+    /**
+     * Get a list of forms for this account
+     * @param offset Start of each result set for form list.
+     * @param limit Number of results in each result set for form list.
+     * @param filter Filters the query results to fetch a specific form range.
+     * @param orderBy Order results by a form field name.
+     * @return Returns basic details such as title of the form, when it was created, number of new and total submissions.
+     */
     public JSONObject getForms(String offset, String limit, HashMap<String, String> filter, String orderBy) {
     	HashMap<String, String> params = createConditions(offset, limit, filter, orderBy);
     	
     	return executeGetRequest("/user/forms", params);
     }
     
+    /**
+     * Get a list of submissions for this account.
+     * @return Returns basic details such as title of the form, when it was created, number of new and total submissions.
+     */
     public JSONObject getSubmissions() {
         return executeGetRequest("/user/submissions", null);
     }
 
+    /**
+     * Get a list of submissions for this account.
+     * @param offset Start of each result set for form list.
+     * @param limit Number of results in each result set for form list.
+     * @param filter Filters the query results to fetch a specific form range.
+     * @param orderBy Order results by a form field name.
+     * @return Returns basic details such as title of the form, when it was created, number of new and total submissions.
+     */
     public JSONObject getSubmissions(String offset, String limit, HashMap<String, String> filter, String orderBy) {
     	HashMap<String, String> params = createConditions(offset, limit, filter, orderBy);
     	
         return executeGetRequest("/user/submissions", params);
     }
 
+    /**
+     * Get a list of sub users for this account.
+     * @return Returns list of forms and form folders with access privileges.
+     */
     public JSONObject getSubUsers() {
         return executeGetRequest("/user/subusers", null);
     }
 
+    /**
+     * Get a list of form folders for this account.
+     * @return Returns name of the folder and owner of the folder for shared folders.
+     */
     public JSONObject getFolders() {
         return executeGetRequest("/user/folders", null);
     }
 
+    /**
+     * List of URLS for reports in this account.
+     * @return Returns reports for all of the forms. ie. Excel, CSV, printable charts, embeddable HTML tables.
+     */
     public JSONObject getReports() {
         return executeGetRequest("/user/reports", null);
     }
-
+    
+    /**
+     * Get user's settings for this account.
+     * @return Returns user's time zone and language.
+     */
     public JSONObject getSettings() {
         return executeGetRequest("/user/settings", null);
     }
 
+    /**
+     * Get user activity log.
+     * @return Returns activity log about things like forms created/modified/deleted, account logins and other operations.
+     */
     public JSONObject getHistory() {
         return executeGetRequest("/user/history", null);
     }
 
+    /**
+     * Get basic information about a form.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Returns form ID, status, update and creation dates, submission count etc.
+     */
     public JSONObject getForm(long formID) {
         return executeGetRequest("/form/" + formID, null);
     }
 
+    /**
+     * Get a list of all questions on a form.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Returns question properties of a form.
+     */
     public JSONObject getFormQuestions(long formID) {
         return executeGetRequest("/form/" + formID + "/questions", null);
     }
 
+    /**
+     * Get details about a question
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param qid Identifier for each question on a form. You can get a list of question IDs from /form/{id}/questions.
+     * @return Returns question properties like required and validation.
+     */
     public JSONObject getFormQuestion(long formID, long qid) {
         return executeGetRequest("/form/" + formID + "/question/" + qid, null);
     }
 
+    /**
+     * List of a form submissions.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Returns submissions of a specific form.
+     */
     public JSONObject getFormSubmissions(long formID) {
         return executeGetRequest("/form/" + formID + "/submissions", null);
     }
     
+    /**
+     * List of a form submissions.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param offset Start of each result set for form list.
+     * @param limit Number of results in each result set for form list.
+     * @param filter Filters the query results to fetch a specific form range.
+     * @param orderBy Order results by a form field name.
+     * @return Returns submissions of a specific form.
+     */
     public JSONObject getFormSubmissions(long formID, String offset, String limit, HashMap<String, String> filter, String orderBy) {
     	HashMap<String, String> params = createConditions(offset, limit, filter, orderBy);
     	
         return executeGetRequest("/form/" + formID + "/submissions", params);
     }
 
+    /**
+     * Submit data to this form using the API.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param submission Submission data with question IDs.
+     * @return Returns posted submission ID and URL.
+     */
     public JSONObject createFormSubmissions(long formID, HashMap<String, String> submission) {
     	HashMap<String, String> parameters = new HashMap<String, String>();
     	
@@ -305,14 +393,30 @@ public class JotForm {
     	return executePostRequest("/form/" + formID +"/submissions", parameters);
     }
 
+    /**
+     * List of files uploaded on a form.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Returns uploaded file information and URLs on a specific form.
+     */
     public JSONObject getFormFiles(long formID) {
         return executeGetRequest("/form/" + formID + "/files", null);
     }
 
+    /**
+     * Get list of webhooks for a form
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Returns list of webhooks for a specific form.
+     */
     public JSONObject getFormWebhooks(long formID) {
         return executeGetRequest("/form/" + formID + "/webhooks", null);
     }
 
+    /**
+     * Add a new webhook
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param webhookURL Webhook URL is where form data will be posted when form is submitted.
+     * @return Returns list of webhooks for a specific form.
+     */
     public JSONObject createFormWebhook(long formID, String webhookURL) {
     	
     	HashMap<String,String> params = new HashMap<String,String>();
@@ -321,30 +425,67 @@ public class JotForm {
     	return executePostRequest("/form/" + formID + "/webhooks", params);
     }
 
+    /**
+     * Get submission data
+     * @param sid You can get submission IDs when you call /form/{id}/submissions.
+     * @return Returns information and answers of a specific submission.
+     */
     public JSONObject getSubmission(long sid) {
         return executeGetRequest("/submission/" + sid, null);
     }
 
+    /**
+     * Get report details
+     * @param reportID You can get a list of reports from /user/reports.
+     * @return Returns properties of a speceific report like fields and status.
+     */
     public JSONObject getReport(long reportID) {
         return executeGetRequest("/report/" + reportID, null);
     }
 
+    /**
+     * Get folder details
+     * @param folderID You can get a list of folders from /user/folders.
+     * @return Returns a list of forms in a folder, and other details about the form such as folder color.
+     */
     public JSONObject getFolder(long folderID) {
         return executeGetRequest("/folder/" + folderID, null);
     }
     
+    /**
+     * Get a list of all properties on a form.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Returns form properties like width, expiration date, style etc.
+     */
     public JSONObject getFormProperties(long formID) {
         return executeGetRequest("/form/" + formID + "/properties", null);
     }
     
+    /**
+     * Get a specific property of the form.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param propertyKey You can get property keys when you call /form/{id}/properties.
+     * @return Returns given property key value.
+     */
     public JSONObject getFormProperty(long formID, String propertyKey ) {
         return executeGetRequest("/form/" + formID + "/properties/" + propertyKey, null);
     }
     
+    /**
+     * Delete a single submission.
+     * @param sid You can get submission IDs when you call /user/submissions.
+     * @return Returns status of request.
+     */
     public JSONObject deleteSubmission(long sid ) {
         return executeDeleteRequest("/submission/" + sid, null);
     }
     
+    /**
+     * Edit a single submission.
+     * @param sid You can get submission IDs when you call /form/{id}/submissions.
+     * @param submission New submission data with question IDs.
+     * @return Returns status of request.
+     */
     public JSONObject editSubmission(long sid, HashMap<String, String> submission ) {
     	HashMap<String, String> parameters = new HashMap<String, String>();
     	
@@ -361,10 +502,21 @@ public class JotForm {
         return executePostRequest("/submission/" + sid, parameters);
     }
     
+    /**
+     * Clone a single form.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Returns status of request.
+     */
     public JSONObject cloneForm(long formID ) {
         return executePostRequest("/form/" + formID + "/clone", null);
     }
     
+    /**
+     * Delete a single form question.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param qid Identifier for each question on a form. You can get a list of question IDs from /form/{id}/questions.
+     * @return Returns status of request.
+     */
     public JSONObject deleteFormQuestion(long formID, long qid ) {
         return executeDeleteRequest("/form/" + formID + "/question/" + qid, null);
     }
