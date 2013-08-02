@@ -5,6 +5,7 @@ import org.apache.http.client.HttpClient;
 import org.json.*;
 
 
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
@@ -14,23 +15,29 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.entity.StringEntity;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class JotForm {
-    
+
     private static String baseUrl = "http://api.jotform.com/";
     public static String version = "v1";
+    
     private String apiKey;
     private boolean debugMode;
 
@@ -81,19 +88,7 @@ public class JotForm {
         } else if (method.equals("POST")) {
             req = new HttpPost(JotForm.baseUrl + JotForm.version + path);
             req.addHeader("apiKey", this.apiKey);
-            
-            /*
-            Set<String> keys = params.keySet();
-            
-            for(String key:keys) {
-            	HttpParams parameter = new BasicHttpParams();
-            	parameter.setParameter(key, params.get(key));
-            	
-            	System.out.println(parameter.toString());
-            	
-            	req.setParams(parameter);
-            }
-            */
+
             if (params != null) {
 	            Set<String> keys = params.keySet();
 	            
@@ -171,6 +166,52 @@ public class JotForm {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		return null;
+    }
+    
+    public JSONObject executePutRequest(String path, JSONObject params) {
+        DefaultHttpClient client = new DefaultHttpClient();
+        
+        HttpUriRequest req;
+        HttpResponse resp;
+        
+    	req = new HttpPut(JotForm.baseUrl + JotForm.version + path);
+        req.addHeader("apiKey", this.apiKey);
+        
+        if (params != null) {
+			try {
+				StringEntity s = new StringEntity(params.toString());
+	    	    s.setContentEncoding((Header) new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+	    	    HttpEntity entity = s;
+	    	    ((HttpPut) req).setEntity(entity);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
+        
+        try {
+            resp = client.execute(req);
+            
+            int statusCode = resp.getStatusLine().getStatusCode();
+
+            if (statusCode != HttpStatus.SC_OK) {
+                this.Log(resp.getStatusLine().getReasonPhrase());
+            }
+            
+            return new JSONObject(readInput(resp.getEntity().getContent()));
+
+        } catch (IOException e) {
+        	
+            
+        } catch (IllegalStateException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
 		return null;
     }
     
@@ -437,7 +478,7 @@ public class JotForm {
     /**
      * Get report details
      * @param reportID You can get a list of reports from /user/reports.
-     * @return Returns properties of a speceific report like fields and status.
+     * @return Returns properties of a specific report like fields and status.
      */
     public JSONObject getReport(long reportID) {
         return executeGetRequest("/report/" + reportID, null);
@@ -519,6 +560,100 @@ public class JotForm {
      */
     public JSONObject deleteFormQuestion(long formID, long qid ) {
         return executeDeleteRequest("/form/" + formID + "/question/" + qid, null);
+    }
+    
+    /**
+     * Add new question to specified form.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param questionProperties New question properties like type and text.
+     * @return Returns properties of new question.
+     */
+    public JSONObject createFormQuestion(long formID, HashMap<String, String> questions ) {
+    	HashMap<String, String> params = new HashMap<String, String>();
+    	
+    	Set<String> keys = questions.keySet();
+    	
+    	for(String key: keys) {
+    		params.put("question[" + key + "]", questions.get(key));
+    	}
+    	
+        return executePostRequest("/form/" + formID + "/questions", params);
+    }
+    
+    /**
+     *  Add new questions to specified form.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param questions New question properties like type and text.
+     * @return Returns properties of new questions.
+     */
+    public JSONObject createFormQuestions(long formID, JSONObject questions) {
+        return executePutRequest("/form/" + formID + "/questions", questions);
+    }
+    
+    /**
+     * Edit a single question properties.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param qid Identifier for each question on a form. You can get a list of question IDs from /form/{id}/questions.
+     * @param questionProperties New question properties like text and order.
+     * @return Returns edited property and type of question.
+     */
+    public JSONObject editFormQuestion(long formID, long qid, HashMap<String, String> questionProperties ) {
+    	HashMap<String, String> question = new HashMap<String, String>();
+    	
+    	Set<String> keys = questionProperties.keySet();
+    	
+    	for(String key: keys) {
+    		question.put("question[" + key + "]", questionProperties.get(key));
+    	}
+    	
+        return executePostRequest("/form/" + formID + "/question/" + qid, question);
+    }
+    
+    /**
+     * Add or edit properties of a specific form
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param formProperties New properties like label width.
+     * @return Returns edited properties.
+     */
+    public JSONObject setFormProperties(long formID, HashMap<String, String> formProperties) {
+    	HashMap<String, String> properties = new HashMap<String, String>();
+    	
+    	Set<String> keys = formProperties.keySet();
+    	
+    	for(String key: keys) {
+    		properties.put("properties[" + key + "]", formProperties.get(key));
+    	}
+    	
+        return executePostRequest("/form/" + formID + "/properties", properties);
+    }
+    
+    /**
+     * Add or edit properties of a specific form
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param formProperties New properties like label width.
+     * @return Returns edited properties.
+     */
+    public JSONObject setMultipleFormProperties(long formID, JSONObject formProperties) {
+    	return executePutRequest("/form/" + formID + "/properties", formProperties);
+    	
+    }
+    
+    /**
+     * Create a new form
+     * @param form Questions, properties and emails of new form.
+     * @return Returns new form.
+     */
+    public JSONObject createForm(JSONObject form) {
+    	return executePutRequest("/user/forms", form);
+    }
+    
+    /**
+     * Delete a single form
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @returnProperties of deleted form.
+     */
+    public JSONObject deleteForm(long formID) {
+    	return executeDeleteRequest("/form/" + formID, null);
     }
 }
 
