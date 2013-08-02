@@ -565,16 +565,16 @@ public class JotForm {
     /**
      * Add new question to specified form.
      * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
-     * @param questionProperties New question properties like type and text.
+     * @param question New question properties like type and text.
      * @return Returns properties of new question.
      */
-    public JSONObject createFormQuestion(long formID, HashMap<String, String> questions ) {
+    public JSONObject createFormQuestion(long formID, HashMap<String, String> question ) {
     	HashMap<String, String> params = new HashMap<String, String>();
     	
-    	Set<String> keys = questions.keySet();
+    	Set<String> keys = question.keySet();
     	
     	for(String key: keys) {
-    		params.put("question[" + key + "]", questions.get(key));
+    		params.put("question[" + key + "]", question.get(key));
     	}
     	
         return executePostRequest("/form/" + formID + "/questions", params);
@@ -650,7 +650,7 @@ public class JotForm {
     /**
      * Delete a single form
      * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
-     * @returnProperties of deleted form.
+     * @return Properties of deleted form.
      */
     public JSONObject deleteForm(long formID) {
     	return executeDeleteRequest("/form/" + formID, null);
