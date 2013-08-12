@@ -259,6 +259,25 @@ public class JotForm {
     	
     	return params;
     }
+    
+    private HashMap<String, String> createHistoryQuery(String action, String date, String sortBy, String startDate, String endDate) {
+    	HashMap<String, String> args = new HashMap<String, String>();
+    	args.put("action", action);
+    	args.put("date", date);
+    	args.put("sortBy", sortBy);
+    	args.put("startDate", startDate);
+    	args.put("endDate", endDate);
+    	
+    	HashMap<String, String> params = new HashMap<String, String>();
+    	
+    	Set<String> keys = args.keySet();
+    	
+    	for(String key: keys) {
+    		params.put(key, args.get(key));
+    	}
+    	
+    	return params;
+    }
 
     /**
      * Get user account details for a JotForm user.
@@ -358,6 +377,21 @@ public class JotForm {
      */
     public JSONObject getHistory() {
         return executeGetRequest("/user/history", null);
+    }
+  
+    /**
+     * Get user activity log.
+     * @param action Filter results by activity performed. Default is 'all'.
+     * @param date Limit results by a date range. If you'd like to limit results by specific dates you can use startDate and endDate fields instead.
+     * @param sortBy Lists results by ascending and descending order.
+     * @param startDate Limit results to only after a specific date. Format: MM/DD/YYYY.
+     * @param endDate Limit results to only before a specific date. Format: MM/DD/YYYY.
+     * @return Returns activity log about things like forms created/modified/deleted, account logins and other operations.
+     */
+    public JSONObject getHistory(String action, String date, String sortBy, String startDate, String endDate) {
+    	HashMap<String, String> params = createHistoryQuery(action, date, sortBy, startDate, endDate);
+    	
+        return executeGetRequest("/user/history", params);
     }
 
     /**
