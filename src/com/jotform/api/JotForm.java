@@ -73,7 +73,6 @@ public class JotForm {
             	int count = 0;
             	
             	for(String key: keys) {
-            	
             		parametersStr = parametersStr + key + "=" + params.get(key);
             		count++;
             		if (count < params.size()) {
@@ -98,10 +97,8 @@ public class JotForm {
 	            }
 	            
 	            UrlEncodedFormEntity entity = new UrlEncodedFormEntity(parameters, "UTF-8");
-	            
 	            ((HttpPost) req).setEntity(entity);
             }
-            
         } else if (method.equals("DELETE")) {
             req = new HttpDelete(JotForm.baseUrl + JotForm.version + path);
             req.addHeader("apiKey", this.apiKey);
@@ -122,7 +119,6 @@ public class JotForm {
 
         } catch (IOException e) {
         	
-            
         } catch (IllegalStateException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
@@ -159,20 +155,16 @@ public class JotForm {
             if (statusCode != HttpStatus.SC_OK) {
                 this.Log(resp.getStatusLine().getReasonPhrase());
             }
-            
             return new JSONObject(readInput(resp.getEntity().getContent()));
 
         } catch (IOException e) {
         	
-            
         } catch (IllegalStateException e) {
 			e.printStackTrace();
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-        
 		return null;
-        
     }
     
     private static String readInput(InputStream in) throws IOException {
@@ -185,7 +177,6 @@ public class JotForm {
             out.write(bytes, 0, n);
             n = in.read(bytes);
         }
-
         return new String(out.toString());
     }
 
@@ -256,7 +247,6 @@ public class JotForm {
     	if (orderBy != "") {
     		params.put("order_by", orderBy);
     	}
-    	
     	return params;
     }
     
@@ -271,11 +261,9 @@ public class JotForm {
     	HashMap<String, String> params = new HashMap<String, String>();
     	
     	Set<String> keys = args.keySet();
-    	
     	for(String key: keys) {
     		params.put(key, args.get(key));
     	}
-    	
     	return params;
     }
 
