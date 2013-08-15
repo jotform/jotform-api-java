@@ -59,7 +59,6 @@ public class JotForm {
     }
 
     public JSONObject executeHttpRequest(String path, HashMap<String,String> params, String method) throws UnsupportedEncodingException {
-
         DefaultHttpClient client = new DefaultHttpClient();
         
         HttpUriRequest req;
@@ -125,14 +124,55 @@ public class JotForm {
         	
             
         } catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+    }
+    
+    public JSONObject executeHttpRequest(String path, JSONObject params) throws UnsupportedEncodingException {
+    	DefaultHttpClient client = new DefaultHttpClient();
+        
+        HttpUriRequest req;
+        HttpResponse resp;
+        
+    	req = new HttpPut(JotForm.baseUrl + JotForm.version + path);
+        req.addHeader("apiKey", this.apiKey);
+        
+        if (params != null) {
+			try {
+				StringEntity s = new StringEntity(params.toString());
+	    	    s.setContentEncoding((Header) new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
+	    	    HttpEntity entity = s;
+	    	    ((HttpPut) req).setEntity(entity);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+        }
+        
+        try {
+            resp = client.execute(req);
+            
+            int statusCode = resp.getStatusLine().getStatusCode();
+
+            if (statusCode != HttpStatus.SC_OK) {
+                this.Log(resp.getStatusLine().getReasonPhrase());
+            }
+            
+            return new JSONObject(readInput(resp.getEntity().getContent()));
+
+        } catch (IOException e) {
+        	
+            
+        } catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (JSONException e) {
 			e.printStackTrace();
 		}
         
 		return null;
+        
     }
     
     private static String readInput(InputStream in) throws IOException {
@@ -153,7 +193,6 @@ public class JotForm {
         try {
 			return executeHttpRequest(path, params, "GET");
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -163,55 +202,17 @@ public class JotForm {
         try {
 			return executeHttpRequest(path, params, "POST");
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
     }
     
     public JSONObject executePutRequest(String path, JSONObject params) {
-        DefaultHttpClient client = new DefaultHttpClient();
-        
-        HttpUriRequest req;
-        HttpResponse resp;
-        
-    	req = new HttpPut(JotForm.baseUrl + JotForm.version + path);
-        req.addHeader("apiKey", this.apiKey);
-        
-        if (params != null) {
-			try {
-				StringEntity s = new StringEntity(params.toString());
-	    	    s.setContentEncoding((Header) new BasicHeader(HTTP.CONTENT_TYPE, "application/json"));
-	    	    HttpEntity entity = s;
-	    	    ((HttpPut) req).setEntity(entity);
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        }
-        
         try {
-            resp = client.execute(req);
-            
-            int statusCode = resp.getStatusLine().getStatusCode();
-
-            if (statusCode != HttpStatus.SC_OK) {
-                this.Log(resp.getStatusLine().getReasonPhrase());
-            }
-            
-            return new JSONObject(readInput(resp.getEntity().getContent()));
-
-        } catch (IOException e) {
-        	
-            
-        } catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
+			return executeHttpRequest(path, params);
+		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-        
 		return null;
     }
     
@@ -219,7 +220,6 @@ public class JotForm {
         try {
 			return executeHttpRequest(path, params, "DELETE");
 		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
