@@ -219,33 +219,31 @@ public class JotForm {
     private HashMap<String, String> createConditions(String offset, String limit, HashMap<String, String> filter, String orderBy) {
     	HashMap<String, String> params = new HashMap<String, String>();
     	
-    	if (offset != "") {
-    		params.put("offset", offset);
-    	}
+    	HashMap<String, String> args = new HashMap<String, String>();
+    	args.put("offset", offset);
+    	args.put("limit", limit);
+    	args.put("order_by", orderBy);
     	
-    	if (limit != "") {
-    		params.put("limit", limit);
+    	Set<String> keys = args.keySet();
+    	for(String key: keys) {
+    		if (args.get(key) != "") {
+    			params.put(key, args.get(key));
+    		}
     	}
     	
     	if (filter != null) {
         	String value = "";
         	int count = 0;
         	
-        	Set<String> keys = filter.keySet();
+        	keys = filter.keySet();
         	for(String key: keys) {
         		value = value + "%7b%22" + key + "%22:%22" + filter.get(key).replace(" ", "%20") + "%22%7d";
-        		
         		count++;
-        		
         		if(count < filter.size()) {
         			value = value + "%2c";
         		}
         	}
     		params.put("filter", value);
-    	}
-    	
-    	if (orderBy != "") {
-    		params.put("order_by", orderBy);
     	}
     	return params;
     }
