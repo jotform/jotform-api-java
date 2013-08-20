@@ -673,7 +673,7 @@ public class JotForm {
      * @param form Questions, properties and emails of new form.
      * @return Returns new form.
      */
-    public JSONObject createForm(JSONObject form) {
+    public JSONObject createForms(JSONObject form) {
     	return executePutRequest("/user/forms", form);
     }
     
