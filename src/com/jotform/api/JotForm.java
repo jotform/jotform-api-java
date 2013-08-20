@@ -448,7 +448,7 @@ public class JotForm {
      * @param submission Submission data with question IDs.
      * @return Returns posted submission ID and URL.
      */
-    public JSONObject createFormSubmissions(long formID, HashMap<String, String> submission) {
+    public JSONObject createFormSubmission(long formID, HashMap<String, String> submission) {
     	HashMap<String, String> parameters = new HashMap<String, String>();
     	
     	Set<String> keys = submission.keySet();
