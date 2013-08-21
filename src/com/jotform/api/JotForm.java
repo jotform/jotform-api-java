@@ -472,6 +472,10 @@ public class JotForm {
     	
     	return executePostRequest("/form/" + formID +"/submissions", parameters);
     }
+    
+    public JSONObject createFormSubmissions(long formID, JSONObject submissions) {
+    	return executePutRequest("/form/" + formID + "/submissions", submissions);
+    }
 
     /**
      * List of files uploaded on a form.
