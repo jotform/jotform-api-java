@@ -473,6 +473,12 @@ public class JotForm {
     	return executePostRequest("/form/" + formID +"/submissions", parameters);
     }
     
+    /**
+     * Submit data to this form using the API
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param submissions Submission data with question IDs.
+     * @return Returns posted submission ID and URL.
+     */
     public JSONObject createFormSubmissions(long formID, JSONObject submissions) {
     	return executePutRequest("/form/" + formID + "/submissions", submissions);
     }
