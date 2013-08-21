@@ -35,7 +35,7 @@ import java.util.Set;
 
 public class JotForm {
 
-    private static String baseUrl = "http://api.jotform.com/";
+    private static String baseUrl = "https://api.jotform.com/";
     public static String version = "v1";
     
     private String apiKey;
