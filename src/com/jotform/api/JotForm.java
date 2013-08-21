@@ -366,6 +366,15 @@ public class JotForm {
     public JSONObject getSettings() {
         return executeGetRequest("/user/settings", null);
     }
+    
+    /**
+     * Update user's settings
+     * @param settings New user setting values with setting keys
+     * @return Returns changes on user settings.
+     */
+    public JSONObject updateSettings(HashMap<String, String> settings) {
+    	return executePostRequest("/user/settings", settings);
+    }
 
     /**
      * Get user activity log.
