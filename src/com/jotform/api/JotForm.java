@@ -702,6 +702,43 @@ public class JotForm {
      * @param form Questions, properties and emails of new form.
      * @return Returns new form.
      */
+    public JSONObject createForm(Map form) {
+		HashMap<String, String> params = new HashMap<String, String>();
+		
+		Set<String> formKeys = form.keySet();
+		
+		for(String formKey: formKeys) {
+			if(formKey.equals("properties")) {
+				HashMap<String, String> properties = (HashMap<String, String>) form.get(formKey);
+				Set<String> propertyKeys = properties.keySet();
+				for(String propertyKey: propertyKeys) {
+					params.put(formKey + "[" + propertyKey + "]", properties.get(propertyKey));
+				}
+			}
+			else {
+				Map formItem = (Map) form.get(formKey);
+				Set<String> formItemKeys = formItem.keySet();
+				
+				for(String formItemKey: formItemKeys) {
+					HashMap<String, String> fi = (HashMap<String, String>) formItem.get(formItemKey);
+					Set<String> fiKeys = fi.keySet();
+					
+					for(String fiKey: fiKeys) {
+						params.put(formKey + "[" + formItemKey + "][" + fiKey + "]", fi.get(fiKey));
+					}
+				}
+			}
+			
+		}
+		
+    	return executePostRequest("/user/forms", params);
+    }
+    
+    /**
+     * Create a new form
+     * @param form Questions, properties and emails of new form.
+     * @return Returns new form.
+     */
     public JSONObject createForms(JSONObject form) {
     	return executePutRequest("/user/forms", form);
     }
