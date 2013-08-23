@@ -751,5 +751,14 @@ public class JotForm {
     public JSONObject deleteForm(long formID) {
     	return executeDeleteRequest("/form/" + formID, null);
     }
+    
+    /**
+     * Register with username, password and email
+     * @param userDetails Username, password and email to register a new user
+     * @return Returns new user's details
+     */
+    public JSONObject registerUser(HashMap<String, String> userDetails) {
+    	return executePostRequest("/user/register", userDetails);
+    }
 }
 
