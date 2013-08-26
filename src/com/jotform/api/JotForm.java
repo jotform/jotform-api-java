@@ -1,3 +1,12 @@
+/**
+ * JotForm API - Java Client
+ *
+ * @copyright   2013 Interlogy, LLC.
+ * @link        http://www.jotform.com
+ * @version     1.0
+ * @package     JotFormAPI
+ */
+
 package com.jotform.api;
 
 import org.apache.http.HttpException;
