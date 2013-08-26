@@ -42,6 +42,16 @@ public class JotForm {
     private String outputType;
     private boolean debugMode;
     
+    public JotForm() {
+    	this.apiKey = null;
+    	this.outputType = "json";
+    	this.debugMode = false;
+    }
+    
+    public JotForm(String apiKey){
+    	this(apiKey, false);
+    }
+    
     public JotForm(String apiKey, boolean debugMode){
         this.apiKey = apiKey;
         this.outputType = "json";
@@ -54,10 +64,6 @@ public class JotForm {
         this.debugMode = debugMode;
     }
     
-    public JotForm(String apiKey){
-    	this(apiKey, false);
-    }
-
     private void Log(String message){
         if (this.debugMode){
             System.out.println(message);
