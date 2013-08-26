@@ -760,5 +760,14 @@ public class JotForm {
     public JSONObject registerUser(HashMap<String, String> userDetails) {
     	return executePostRequest("/user/register", userDetails);
     }
+    
+    /**
+     * Login user with given credentials
+     * @param credentials Username, password, application name and access type of user
+     * @return Returns logged in user's settings and app key
+     */
+    public JSONObject loginUser(HashMap<String, String> credentials) {
+    	return executePostRequest("/user/login", credentials);
+    }
 }
 
