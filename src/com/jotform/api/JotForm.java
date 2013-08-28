@@ -79,7 +79,7 @@ public class JotForm {
         }
     }
 
-    public JSONObject executeHttpRequest(String path, HashMap<String,String> params, String method) throws UnsupportedEncodingException {
+    private JSONObject executeHttpRequest(String path, HashMap<String,String> params, String method) throws UnsupportedEncodingException {
         DefaultHttpClient client = new DefaultHttpClient();
         
         HttpUriRequest req;
@@ -152,7 +152,7 @@ public class JotForm {
 		return null;
     }
     
-    public JSONObject executeHttpRequest(String path, JSONObject params) throws UnsupportedEncodingException {
+    private JSONObject executeHttpRequest(String path, JSONObject params) throws UnsupportedEncodingException {
     	DefaultHttpClient client = new DefaultHttpClient();
         
         HttpUriRequest req;
@@ -205,7 +205,7 @@ public class JotForm {
         return new String(out.toString());
     }
 
-    public JSONObject executeGetRequest(String path, HashMap<String,String> params) {
+    private JSONObject executeGetRequest(String path, HashMap<String,String> params) {
         try {
 			return executeHttpRequest(path, params, "GET");
 		} catch (UnsupportedEncodingException e) {
@@ -214,7 +214,7 @@ public class JotForm {
 		return null;
     }
 
-    public JSONObject executePostRequest(String path, HashMap<String,String> params) {
+    private JSONObject executePostRequest(String path, HashMap<String,String> params) {
         try {
 			return executeHttpRequest(path, params, "POST");
 		} catch (UnsupportedEncodingException e) {
@@ -223,7 +223,7 @@ public class JotForm {
 		return null;
     }
     
-    public JSONObject executePutRequest(String path, JSONObject params) {
+    private JSONObject executePutRequest(String path, JSONObject params) {
         try {
 			return executeHttpRequest(path, params);
 		} catch (UnsupportedEncodingException e) {
@@ -232,7 +232,7 @@ public class JotForm {
 		return null;
     }
     
-    public JSONObject executeDeleteRequest(String path, HashMap<String,String> params) {
+    private JSONObject executeDeleteRequest(String path, HashMap<String,String> params) {
         try {
 			return executeHttpRequest(path, params, "DELETE");
 		} catch (UnsupportedEncodingException e) {
