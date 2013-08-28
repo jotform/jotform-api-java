@@ -45,7 +45,7 @@ import java.util.Set;
 public class JotForm {
 
     private static String baseUrl = "https://api.jotform.com/";
-    public static String version = "v1";
+    private static String version = "v1";
     
     private String apiKey;
     private String outputType;
@@ -72,6 +72,12 @@ public class JotForm {
         this.outputType = outputType;
         this.debugMode = debugMode;
     }
+   
+    public boolean getDebugMode() {return this.debugMode;}
+    public void setDebugMode(boolean value) {this.debugMode = value;}
+    
+    public String getOutputType() {return this.outputType;}
+    public void setOutputType(String value) {this.outputType = value;}
     
     private void Log(String message){
         if (this.debugMode){
