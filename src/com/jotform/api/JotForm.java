@@ -73,10 +73,27 @@ public class JotForm {
         this.debugMode = debugMode;
     }
    
+    /**
+     * Get JotForm client debug mode
+     * @return JotForm client debug mode
+     */
     public boolean getDebugMode() {return this.debugMode;}
+    /**
+     * Set JotForm client debug mode
+     * @param value Debug mode new value
+     */
     public void setDebugMode(boolean value) {this.debugMode = value;}
     
+    /**
+     * Get JotForm client output type
+     * @return JotForm client output type
+     */
     public String getOutputType() {return this.outputType;}
+    
+    /**
+     * Set JotForm client output type
+     * @param value Output type new value (JSON or XML)
+     */
     public void setOutputType(String value) {this.outputType = value;}
     
     private void Log(String message){
