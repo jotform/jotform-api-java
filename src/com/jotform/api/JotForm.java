@@ -609,6 +609,11 @@ public class JotForm {
         return executeGetRequest("/form/" + formID + "/properties/" + propertyKey, null);
     }
     
+    /**
+     * Get all the reports of a form, such as excel, csv, grid, html, etc.
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @return Returns list of all reports in a form, and other details about the reports such as title.
+     */
     public JSONObject getFormReports(long formID) {
     	return executeGetRequest("/form/" + formID + "/reports", null);
     }
