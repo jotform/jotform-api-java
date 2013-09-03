@@ -609,6 +609,10 @@ public class JotForm {
         return executeGetRequest("/form/" + formID + "/properties/" + propertyKey, null);
     }
     
+    public JSONObject getFormReports(long formID) {
+    	return executeGetRequest("/form/" + formID + "/reports", null);
+    }
+    
     /**
      * Delete a single submission.
      * @param sid You can get submission IDs when you call /user/submissions.
