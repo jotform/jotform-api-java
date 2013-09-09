@@ -586,7 +586,7 @@ public class JotForm {
      * @param folderID You can get a list of folders from /user/folders.
      * @return Returns a list of forms in a folder, and other details about the form such as folder color.
      */
-    public JSONObject getFolder(long folderID) {
+    public JSONObject getFolder(String folderID) {
         return executeGetRequest("/folder/" + folderID, null);
     }
     
