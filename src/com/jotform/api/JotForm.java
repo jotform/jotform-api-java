@@ -13,7 +13,6 @@ import org.apache.http.HttpException;
 import org.apache.http.client.HttpClient;
 import org.json.*;
 
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
@@ -815,6 +814,15 @@ public class JotForm {
      */
     public JSONObject loginUser(HashMap<String, String> credentials) {
     	return executePostRequest("/user/login", credentials);
+    }
+    
+    /**
+     * Get details of a plan
+     * @param planName Name of the requested plan. FREE, PREMIUM etc.
+     * @return Returns details of a plan
+     */
+    public JSONObject getPlan(String planName) {
+    	return executeGetRequest("/system/plan/" + planName, null);
     }
 }
 
