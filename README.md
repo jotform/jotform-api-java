@@ -179,7 +179,7 @@ public class DeleteSubmissions {
 	
 		JotForm client = new JotForm("YOUR API KEY");
 		
-		JSONObject submissionsResponse = client.getSubmissions("", "2", null, "");
+		JSONObject submissionsResponse = client.getSubmissions("", "50", null, "");
 		
 		JSONArray submissions;
 		try {
