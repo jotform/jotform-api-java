@@ -618,6 +618,16 @@ public class JotForm {
     }
     
     /**
+     * Create new report of a form
+     * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
+     * @param report Report details. List type, title etc.
+     * @return Returns report details and URL.
+     */
+    public JSONObject createReport(long formID, HashMap<String, String> report){
+    	return executePostRequest("/form/" + formID + "/reports", report);
+    }
+    
+    /**
      * Delete a single submission.
      * @param sid You can get submission IDs when you call /user/submissions.
      * @return Returns status of request.
