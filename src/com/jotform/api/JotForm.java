@@ -41,12 +41,10 @@ public class JotForm {
     private static String version = "v1";
     
     private String apiKey;
-    private String outputType;
     private boolean debugMode;
     
     public JotForm() {
     	this.apiKey = null;
-    	this.outputType = "json";
     	this.debugMode = false;
     }
     
@@ -56,13 +54,6 @@ public class JotForm {
     
     public JotForm(String apiKey, boolean debugMode){
         this.apiKey = apiKey;
-        this.outputType = "json";
-        this.debugMode = debugMode;
-    }
-
-    public JotForm(String apiKey, String outputType, boolean debugMode){
-        this.apiKey = apiKey;
-        this.outputType = outputType;
         this.debugMode = debugMode;
     }
    
@@ -77,18 +68,6 @@ public class JotForm {
      */
     public void setDebugMode(boolean value) {this.debugMode = value;}
     
-    /**
-     * Get JotForm client output type
-     * @return JotForm client output type
-     */
-    public String getOutputType() {return this.outputType;}
-    
-    /**
-     * Set JotForm client output type
-     * @param value Output type new value (JSON or XML)
-     */
-    public void setOutputType(String value) {this.outputType = value;}
-    
     private void Log(String message){
         if (this.debugMode){
             System.out.println(message);
@@ -101,10 +80,6 @@ public class JotForm {
         HttpUriRequest req;
         HttpResponse resp;
 
-        if(!this.outputType.equals("json")) {
-        	path = path + ".xml";
-        }
-        
         if (method.equals("GET")){
         	
         	String parametersStr = "";
