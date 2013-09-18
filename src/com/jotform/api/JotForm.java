@@ -617,7 +617,7 @@ public class JotForm {
     	Set<String> keys = submission.keySet();
     	
     	for(String key: keys) {
-    		if (key.contains("_")) {
+    		if (key.contains("_") && !key.equals("created_at")) {
     			parameters.put("submission[" + key.substring(0, key.indexOf("_")) + "][" + key.substring(key.indexOf("_") + 1) + "]", submission.get(key));
     		} else {
     			parameters.put("submission[" + key + "]", submission.get(key));
