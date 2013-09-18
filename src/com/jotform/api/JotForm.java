@@ -238,7 +238,7 @@ public class JotForm {
     	HashMap<String, String> args = new HashMap<String, String>();
     	args.put("offset", offset);
     	args.put("limit", limit);
-    	args.put("order_by", orderBy);
+    	args.put("orderby", orderBy);
     	
     	Set<String> keys = args.keySet();
     	for(String key: keys) {
