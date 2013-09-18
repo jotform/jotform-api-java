@@ -24,15 +24,15 @@ JotForm API requires API key for all user related calls. You can create your API
 Print all forms of the user
 
 ```java
-package com.jotform.api;
+package com.jotform.api.samples;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.jotform.api.*;
 
 public class PrintFormList {
 
-	
 	public static void main(String[] args) {
 	
 		JotForm client = new JotForm("YOUR API KEY");
@@ -41,40 +41,35 @@ public class PrintFormList {
 		JSONObject formsResponse = client.getForms();
 		
 		try {
-			
 			JSONArray forms = formsResponse.getJSONArray("content");
 			
 			for (int i=0; i<forms.length(); i++){
 				JSONObject form = forms.getJSONObject(i);
 				
 				System.out.println(form.get("title") + " (Total:" +form.get("count") + " New:" + form.get("new") + ")");
-				
 			}
-		
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
-
 }
 ``` 
    
 Get submissions of the latest form
 
 ```java
-package com.jotform.api;
+package com.jotform.api.samples;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.jotform.api.*;
 
-public class PrintFormSubmissions {
+public class LatestFormSubmissions {
 
-	
 	public static void main(String[] args) {
-	
+		
 		JotForm client = new JotForm("YOUR API KEY");
 		
 		JSONObject formsResponse = client.getForms("", "1", null, "");
@@ -93,9 +88,7 @@ public class PrintFormSubmissions {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
 	}
-
 }
 ``` 
 
@@ -127,20 +120,18 @@ public class PrintLastSubmissions {
 Submission and form filter examples
 
 ```java
-package com.jotform.api;
+package com.jotform.api.samples;
 
 import java.util.HashMap;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
+import com.jotform.api.*;
 
-public class Filters {
-
-	
+public class SubmissionFormFilters {
+		
 	public static void main(String[] args) {
-	
-		JotForm client = new JotForm("8b36455f659087568bed58c1642082f4");
+		
+		JotForm client = new JotForm("YOUR API KEY");
 		
 		HashMap<String, String> submissionFilter = new HashMap<String, String>();
 		submissionFilter.put("id:gt", "FORM ID");
@@ -150,33 +141,30 @@ public class Filters {
 		
 		System.out.println(submissions);
 		
-		
 		HashMap<String, String> formFilter = new HashMap<String, String>();
 		formFilter.put("id:gt", "FORM ID");
 		
 		JSONObject forms = client.getForms("", "", formFilter, "");
 		
 		System.out.println(forms);
-		
 	}
-
 }
 ``` 
 
 Delete last 50 submissions
 
 ```java
-package com.jotform.api;
+package com.jotform.api.samples;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import com.jotform.api.*;
 
-public class DeleteSubmissions {
-
-	
+public class Delete50Submissions {
+		
 	public static void main(String[] args) {
-	
+		
 		JotForm client = new JotForm("YOUR API KEY");
 		
 		JSONObject submissionsResponse = client.getSubmissions("", "50", null, "");
@@ -196,7 +184,6 @@ public class DeleteSubmissions {
 			e.printStackTrace();
 		}	
 	}
-
 }
 ``` 
 
