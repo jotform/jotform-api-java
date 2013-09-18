@@ -7,30 +7,24 @@ import com.jotform.api.*;
 
 public class PrintFormList {
 
-	
 	public static void main(String[] args) {
 	
-		JotForm client = new JotForm("REPLACE_WITH_YOUR_APIKEY");
+		JotForm client = new JotForm("YOUR API KEY");
 		
 		
 		JSONObject formsResponse = client.getForms();
 		
 		try {
-			
 			JSONArray forms = formsResponse.getJSONArray("content");
 			
 			for (int i=0; i<forms.length(); i++){
 				JSONObject form = forms.getJSONObject(i);
 				
 				System.out.println(form.get("title") + " (Total:" +form.get("count") + " New:" + form.get("new") + ")");
-				
 			}
-		
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
-
 }
