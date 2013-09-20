@@ -21,7 +21,9 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
@@ -29,6 +31,8 @@ import org.apache.http.protocol.HTTP;
 import org.apache.http.entity.StringEntity;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,24 +85,23 @@ public class JotForm {
         HttpResponse resp;
 
         if (method.equals("GET")){
-        	
-        	String parametersStr = "";
-        	if (params != null) {
-            	Set<String> keys = params.keySet();   
-            	parametersStr = "?";
-            	int count = 0;
-            	
-            	for(String key: keys) {
-            		parametersStr = parametersStr + key + "=" + params.get(key);
-            		count++;
-            		if (count < params.size()) {
-            			parametersStr = parametersStr + "&";
-            		}
-            	}
-        	}
-            
-        	req = new HttpGet(JotForm.baseUrl + JotForm.version + path + parametersStr);
+        	req = new HttpGet(JotForm.baseUrl + JotForm.version + path);
             req.addHeader("apiKey", this.apiKey);
+            
+            if(params != null) {
+                URI uri = null;
+                URIBuilder ub = new URIBuilder(req.getURI());
+                
+            	Set<String> keys = params.keySet();
+            	for(String key: keys) {
+            		try {
+						uri = ub.addParameter(key,params.get(key)).build();
+					} catch (URISyntaxException e) {
+						e.printStackTrace();
+					}
+            	}
+            	((HttpRequestBase) req).setURI(uri);
+            }
         } else if (method.equals("POST")) {
             req = new HttpPost(JotForm.baseUrl + JotForm.version + path);
             req.addHeader("apiKey", this.apiKey);
@@ -247,20 +250,11 @@ public class JotForm {
     		}
     	}
     	
-    	if (filter != null) {
-        	String value = "";
-        	int count = 0;
-        	
-        	keys = filter.keySet();
-        	for(String key: keys) {
-        		value = value + "%7b%22" + key + "%22:%22" + filter.get(key).replace(" ", "%20") + "%22%7d";
-        		count++;
-        		if(count < filter.size()) {
-        			value = value + "%2c";
-        		}
-        	}
-    		params.put("filter", value);
+    	if(filter != null) {
+    		JSONObject filterObject = new JSONObject((Map)filter);
+    		params.put("filter", filterObject.toString());
     	}
+    	
     	return params;
     }
     
