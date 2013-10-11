@@ -790,6 +790,14 @@ public class JotForm {
     }
     
     /**
+     * Logout user
+     * @return Returns status of request
+     */
+    public JSONObject logoutUser() {
+    	return executeGetRequest("/user/logout", null);
+    }
+    
+    /**
      * Get details of a plan
      * @param planName Name of the requested plan. FREE, PREMIUM etc.
      * @return Returns details of a plan
