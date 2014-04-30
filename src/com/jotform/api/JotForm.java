@@ -805,5 +805,14 @@ public class JotForm {
     public JSONObject getPlan(String planName) {
     	return executeGetRequest("/system/plan/" + planName, null);
     }
+
+    /**
+     * Delete a single report
+     * @param reportID You can get a list of reports from /user/reports.
+     * @return Returns status of request.
+     */
+    public JSONObject deleteReport(long reportID) {
+        return executeDeleteRequest("/report/" + reportID, null);
+    }
 }
 
