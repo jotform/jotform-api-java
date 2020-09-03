@@ -24,7 +24,8 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
@@ -79,8 +80,6 @@ public class JotForm {
     }
 
     private JSONObject executeHttpRequest(String path, HashMap<String,String> params, String method) throws UnsupportedEncodingException {
-        DefaultHttpClient client = new DefaultHttpClient();
-        
         HttpUriRequest req;
         HttpResponse resp;
 
@@ -125,7 +124,7 @@ public class JotForm {
         	req = null;
         }
         
-        try {
+        try ( CloseableHttpClient client = HttpClientBuilder.create().build() ) {
             resp = client.execute(req);
             
             int statusCode = resp.getStatusLine().getStatusCode();
@@ -147,8 +146,6 @@ public class JotForm {
     }
     
     private JSONObject executeHttpRequest(String path, JSONObject params) throws UnsupportedEncodingException {
-    	DefaultHttpClient client = new DefaultHttpClient();
-        
         HttpUriRequest req;
         HttpResponse resp;
         
@@ -166,7 +163,7 @@ public class JotForm {
 			}
         }
         
-        try {
+        try ( CloseableHttpClient client = HttpClientBuilder.create().build() ) {
             resp = client.execute(req);
             
             int statusCode = resp.getStatusLine().getStatusCode();
