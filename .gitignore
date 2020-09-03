@@ -1,3 +1,4 @@
 bin/
 src/com/jotform/api/.DS_Store
 .DS_Store
+/target/
