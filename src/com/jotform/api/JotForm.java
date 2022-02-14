@@ -551,7 +551,47 @@ public class JotForm {
     public JSONObject getFolder(String folderID) {
         return executeGetRequest("/folder/" + folderID, null);
     }
+
+    /**
+     * Create a folder.
+     * @param folderProperties Properties of new folder.
+     * @return Returns report details and URL.
+     */
+    public JSONObject createFolder(HashMap<String, String> folderProperties){
+    	return executePostRequest("/folder", folderProperties);
+    }
     
+    /**
+     * Delete a folder and its subfolders.
+     * @param folderID You can get folder IDs when you call /user/folders.
+     * @return Returns status of request.
+     */
+    public JSONObject deleteSubmission(String folderID) {
+        return executeDeleteRequest("/folder/" + folderID, null);
+    }
+
+    /**
+     * Update a specific folder.
+     * @param folderID You can get folder IDs when you call /user/folders.
+     * @param folderProperties New properties of the specified folder.
+     * @return Returns properties of the updated folder.
+     */
+    public JSONObject updateFolder(String folderID, JSONObject folderProperties) {
+        return executePutRequest("/folder/" + folderID, folderProperties);
+    }
+
+    public JSONObject addFormsToFolder(String folderID, String[] formIDs) {
+        JSONArray formArray = new JSONArray(Arrays.asList(formIDs));
+        JSONObject data = new JSONObject();
+        data.put("forms", formArray);
+        return this.updateFolder(folderID, data); 
+    }
+
+    public JSONObject addFormToFolder(String folderID, String formID) {
+        String formIDs[] = { formID };
+        return this.addFormsToFolder(folderID, formIDs);
+    }
+
     /**
      * Get a list of all properties on a form.
      * @param formID Form ID is the numbers you see on a form URL. You can get form IDs when you call /user/forms.
